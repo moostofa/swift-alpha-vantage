@@ -4,7 +4,7 @@ extension ApiResponse.StockTimeSeries {
         let data: [String: MarketDataGlobalQuote]
         
         private enum CodingKeys: String, CodingKey {
-          let data = "Global Quote"
+          case data = "Global Quote"
         }
     }
 }
