@@ -12,15 +12,15 @@ extension ApiResponse.StockTimeSeries {
         let changePercent: String
         
         private enum CodingKeys: String, CodingKey {
-        case symbol = "1. symbol"
-        case open = "2. open"
-        case high = "3. high"
-        case low = "4. low"
-        case price = "5. price"
-        case volume = "6. volume"
-        case latestTradingDay = "7. latest trading day"
-        case previousClose = "8. previous close"
-        case change = "9. change"
+        case symbol = "01. symbol"
+        case open = "02. open"
+        case high = "03. high"
+        case low = "04. low"
+        case price = "05. price"
+        case volume = "06. volume"
+        case latestTradingDay = "07. latest trading day"
+        case previousClose = "08. previous close"
+        case change = "09. change"
         case changePercent = "10. change percent"
         }
     }
