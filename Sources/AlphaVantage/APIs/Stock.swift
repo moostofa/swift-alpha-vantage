@@ -185,6 +185,60 @@ public class Stock: AlphaVantage {
             } // - end switch
         } // - end completion
     }
+    
+  /**
+   A lightweight alternative to the time series APIs, this service returns the price and volume information for a token of your choice.
+   
+   - Parameters:
+     - symbol: The symbol of target equity.
+     - completion: A closure to be executed once the request has finished.
+   */
+    public func fetchStockGlobalQuote(
+        symbol: String,
+        completion: @escaping (
+          _ result: ApiResponse.StockTimeSeries.MarketDataGlobalQuote?,
+            _ err: Error?
+        ) -> Void
+    ) {
+        let request = RestRequest(
+            method: .get, url: apiUrl(function: .quoteEndpoint, symbol: symbol)
+        )
+        request.responseData { result in
+            switch result {
+            case let .success(res):
+                guard let decoded = try? JSONDecoder().decode(
+                    Res.MarketDataGlobalQuote.self, from: res.body
+                ) else {
+                    if let errRes = try? JSONDecoder().decode(
+                        ErrRes.self, from: res.body
+                    ) {
+                        completion(nil, errRes)
+                    } else {
+                        completion(nil, ErrRes(errMsg: "Unknown Error"))
+                    }
+
+                    return
+                }
+                
+                var err: Error?
+                
+                if let export = self.export {
+                    let filename = "global_quote_\(symbol)"
+                    do {
+                        try self.handleExport(data: res.body,
+                                              filename: filename,
+                                              export)
+                    } catch {
+                        err = error
+                    }
+                }
+                
+                completion(decoded, err)
+            case let .failure(err):
+                completion(nil, err)
+            } // - end switch
+        } // - end completion      
+    }
 
     private func apiUrl(function: ApiConst.Stock.Function,
                         symbol: String) -> String
