@@ -196,7 +196,7 @@ public class Stock: AlphaVantage {
     public func fetchStockGlobalQuote(
         symbol: String,
         completion: @escaping (
-          _ result: ApiResponse.StockTimeSeries.MarketDataGlobalQuote?,
+          _ result: ApiResponse.StockTimeSeries.STSQuoteEndpoint?,
             _ err: Error?
         ) -> Void
     ) {
@@ -207,7 +207,7 @@ public class Stock: AlphaVantage {
             switch result {
             case let .success(res):
                 guard let decoded = try? JSONDecoder().decode(
-                    Res.MarketDataGlobalQuote.self, from: res.body
+                    Res.STSQuoteEndpoint.self, from: res.body
                 ) else {
                     if let errRes = try? JSONDecoder().decode(
                         ErrRes.self, from: res.body
